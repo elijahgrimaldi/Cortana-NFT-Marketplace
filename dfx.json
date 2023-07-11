@@ -1,0 +1,29 @@
+{
+  "canisters": {
+    "cortana_backend": {
+      "main": "src/cortana_backend/main.mo",
+      "type": "motoko"
+    },
+    "cortana_frontend": {
+      "dependencies": [
+        "cortana_backend"
+      ],
+      "frontend": {
+        "entrypoint": "src/cortana_frontend/src/index.html"
+      },
+      "source": [
+        "src/cortana_frontend/assets",
+        "dist/cortana_frontend/"
+      ],
+      "type": "assets"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}
