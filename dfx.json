@@ -4,6 +4,10 @@
       "main": "src/cortana_backend/main.mo",
       "type": "motoko"
     },
+    "nft": {
+      "main": "src/NFT/nft.mo",
+      "type": "motoko"
+    },
     "cortana_frontend": {
       "dependencies": [
         "cortana_backend"
