@@ -5,12 +5,14 @@ import Debug "mo:base/Debug";
 import HashMap "mo:base/HashMap";
 import List "mo:base/List";
 import Array "mo:base/Array";
+import Float "mo:base/Float";
 
 actor Cortana {
 
     var mapOfNFTs = HashMap.HashMap<Principal, NFTActorClass.NFT>(1, Principal.equal, Principal.hash);
     var mapOfOwners = HashMap.HashMap<Principal, List.List<Principal>>(1, Principal.equal, Principal.hash);
     var saleList : [Principal] = [];
+    var mapOfPrices = HashMap.HashMap<Principal, Float>(1, Principal.equal, Principal.hash);
 
     public shared (msg) func mint(imgData : [Nat8], name : Text) : async Principal {
         let owner : Principal = msg.caller;
@@ -60,6 +62,17 @@ actor Cortana {
         return saleList;
     };
 
+    public shared func addSalePrice(nftId : Principal, price : Float) {
+        mapOfPrices.put(nftId, price);
+    };
+
+    public query func getSalePrice(nftId : Principal) : async Float {
+        var nftPrice : Float = switch (mapOfPrices.get(nftId)) {
+            case null { -1 };
+            case (?result) { result };
+        };
+        return nftPrice;
+    };
     public shared func clearData() : async () {
         mapOfNFTs := HashMap.HashMap<Principal, NFTActorClass.NFT>(1, Principal.equal, Principal.hash);
         mapOfOwners := HashMap.HashMap<Principal, List.List<Principal>>(1, Principal.equal, Principal.hash);
