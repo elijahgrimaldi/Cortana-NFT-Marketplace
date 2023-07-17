@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Item from "./Item";
 
-function Gallery(props) {
-
+function Discover(props) {
+    
   const [items, setItems] = useState();
 
   function fetchNFTs () {
@@ -33,4 +33,4 @@ function Gallery(props) {
   );
 }
 
-export default Gallery;
+export default Discover

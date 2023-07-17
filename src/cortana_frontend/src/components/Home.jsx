@@ -6,9 +6,7 @@ function Home() {
   return (
     <div> <img className="bottom-space" src={homeImage} /> 
     <p className="home-paragraph">
-              The Internet Computer's largest digital marketplace for crypto
-              collectibles and non-fungible tokens (NFTs). Buy, sell, and
-              discover exclusive digital items.
+              A digital marketplace for non-fungible tokens.
     </p> </div>
   )
 }

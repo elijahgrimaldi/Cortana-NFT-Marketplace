@@ -16,11 +16,16 @@
         "entrypoint": "src/cortana_frontend/src/index.html"
       },
       "source": [
-        "src/cortana_frontend/assets",
-        "dist/cortana_frontend/"
+        "src/cortana_frontend/assets"
       ],
-      "type": "assets"
-    }
+      "type": "assets",
+      "bindings": [
+        {
+          "source": "/.*",
+          "destination": "/index.html"
+        }
+      ]
+    }    
   },
   "defaults": {
     "build": {
@@ -30,4 +35,5 @@
   },
   "output_env_file": ".env",
   "version": 1
+  
 }

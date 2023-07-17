@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
-import logo from "../../assets/logo.png";
 import { Actor, HttpAgent } from "@dfinity/agent";
 import { idlFactory } from "../../../declarations/nft";
+import {cortana_backend} from "../../../declarations/cortana_backend";
 import { Principal } from "@dfinity/principal";
+import Button from "./Button";
 
 function Item(props) {
   const [name, setName] = useState();
-  const [owner, setOwner] = useState();
   const [image, setImage] = useState();
+  const [owner, setOwner] = useState();
+  const [button, setButton] = useState();
+  const [priceInput, setPriceInput] = useState();
 
-  const id = Principal.fromText(props.id);
+  const id = props.id;
 
   const localHost = "http://localhost:8080/";
   const agent = new HttpAgent({ host: localHost });
@@ -37,6 +40,32 @@ function Item(props) {
     loadNFT();
   }, []);
 
+  useEffect(() => {
+    if (owner) {
+      setButton(<Button text="Sell" handleClick={handleSell} />);
+    }
+  }, [owner]);
+  
+
+  let price;
+  async function handleConfirm(){
+    await loadNFT()
+    const addToSale = await cortana_backend.addToForSale(owner, props.id)
+    setPriceInput()
+    setButton(<Button text="Sell" handleClick={handleSell}/>)
+    alert("NFT has been listed for sale!")
+  }
+  function handleSell(){
+    setPriceInput(<input
+      placeholder="Price"
+      type="number"
+      className="price-input"
+      value={price}
+      onChange={(e) => price=e.target.value}
+    />);
+    setButton(<Button text="Confirm" handleClick={handleConfirm}/>)
+  }
+
   return (
     <div className="disGrid-item">
       <div className="disPaper-root disCard-root makeStyles-root-17 disPaper-elevation1 disPaper-rounded">
@@ -52,8 +81,11 @@ function Item(props) {
           <p className="disTypography-root makeStyles-bodyText-24 disTypography-body2 disTypography-colorTextSecondary">
             Owner: {owner}
           </p>
+          {priceInput}
+          {button}
         </div>
       </div>
+
     </div>
   );
 }
