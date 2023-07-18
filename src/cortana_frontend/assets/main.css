@@ -1354,3 +1354,14 @@ label[data-shrink="false"]
   margin: 0 auto;
   margin-bottom: 16vh;
 }
+
+.card-element {
+  background-color: white;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.listed-price {
+  color: white;
+}

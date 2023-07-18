@@ -1,19 +1,23 @@
 import React, { useEffect, useState } from "react";
+import { cortana_backend } from "../../../declarations/cortana_backend/index";
 import Item from "./Item";
 
 function Discover(props) {
     
   const [items, setItems] = useState();
 
-  function fetchNFTs () {
-    if (props.ids != undefined){
-      setItems(
-        props.ids.map( (NFTId) => (
-          <Item id={NFTId} key={NFTId.toText()}/>
-        ))
-      )
+  async function fetchNFTs() {
+    if (props.ids !== undefined) {
+      const items = await Promise.all(
+        props.ids.map(async (NFTId) => {
+          const NFTprice = await cortana_backend.getSalePrice(NFTId);
+          return <Item sale={NFTprice} id={NFTId} key={NFTId.toText()} />;
+        })
+      );
+      setItems(items);
     }
   }
+  
 
   useEffect( () => {
     fetchNFTs();

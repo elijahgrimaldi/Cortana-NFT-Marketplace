@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {useForm} from "react-hook-form";
 import {cortana_backend} from "../../../declarations/cortana_backend"
-import { nft } from "../../../declarations/nft/index";
 import Item from "./Item";
 
 function Minter() {

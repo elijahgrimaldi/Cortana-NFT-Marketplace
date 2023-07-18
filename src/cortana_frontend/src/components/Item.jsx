@@ -11,6 +11,7 @@ function Item(props) {
   const [owner, setOwner] = useState();
   const [button, setButton] = useState();
   const [priceInput, setPriceInput] = useState();
+  const [listedPrice, setListedPrice] = useState();
 
   const id = props.id;
 
@@ -42,17 +43,24 @@ function Item(props) {
 
   useEffect(() => {
     if (owner) {
+      if (props.sale && props.sale != "None"){
+      setListedPrice(props.sale)
+      setButton(<Button text="Buy" handleClick={handleBuy} />);
+      }
+      else{
       setButton(<Button text="Sell" handleClick={handleSell} />);
+      }
     }
+
   }, [owner]);
   
 
   let price;
   async function handleConfirm(){
     await loadNFT()
-    const addToSale = await cortana_backend.addToForSale(owner, props.id)
-    setPriceInput()
-    setButton(<Button text="Sell" handleClick={handleSell}/>)
+    await cortana_backend.addToForSale(owner, id)
+    const motokoPrice = price.toString();
+    await cortana_backend.addSalePrice(id, motokoPrice)
     alert("NFT has been listed for sale!")
   }
   function handleSell(){
@@ -64,6 +72,11 @@ function Item(props) {
       onChange={(e) => price=e.target.value}
     />);
     setButton(<Button text="Confirm" handleClick={handleConfirm}/>)
+  }
+  async function handleBuy(){
+    await cortana_backend.removeFromSale(id)
+    await cortana_backend.addToBoughtOwner(id)
+    alert("NFT purcahsed!")
   }
 
   return (
@@ -81,6 +94,9 @@ function Item(props) {
           <p className="disTypography-root makeStyles-bodyText-24 disTypography-body2 disTypography-colorTextSecondary">
             Owner: {owner}
           </p>
+          <div className="card-element">
+            <p className="listed-price">{listedPrice}</p>
+          </div>
           {priceInput}
           {button}
         </div>

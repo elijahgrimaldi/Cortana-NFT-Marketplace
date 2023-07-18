@@ -16,8 +16,6 @@ function Header() {
   async function getNFTs(){
     const userNFTIds = await cortana_backend.getOwnedNFTs(CURRENT_USER_ID);
     const forSaleNFTs = await cortana_backend.getForSale();
-    console.log(userNFTIds)
-    console.log(forSaleNFTs)
     setOwnedGallery(<Gallery title="My NFTs" ids={userNFTIds} />);
     setForSalePage(<Discover title="Discover" ids={forSaleNFTs}/>);
 

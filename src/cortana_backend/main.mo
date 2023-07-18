@@ -12,7 +12,7 @@ actor Cortana {
     var mapOfNFTs = HashMap.HashMap<Principal, NFTActorClass.NFT>(1, Principal.equal, Principal.hash);
     var mapOfOwners = HashMap.HashMap<Principal, List.List<Principal>>(1, Principal.equal, Principal.hash);
     var saleList : [Principal] = [];
-    var mapOfPrices = HashMap.HashMap<Principal, Float>(1, Principal.equal, Principal.hash);
+    var mapOfPrices = HashMap.HashMap<Principal, Text>(1, Principal.equal, Principal.hash);
 
     public shared (msg) func mint(imgData : [Nat8], name : Text) : async Principal {
         let owner : Principal = msg.caller;
@@ -62,17 +62,34 @@ actor Cortana {
         return saleList;
     };
 
-    public shared func addSalePrice(nftId : Principal, price : Float) {
+    public shared func addSalePrice(nftId : Principal, price : Text) {
         mapOfPrices.put(nftId, price);
     };
 
-    public query func getSalePrice(nftId : Principal) : async Float {
-        var nftPrice : Float = switch (mapOfPrices.get(nftId)) {
-            case null { -1 };
+    public query func getSalePrice(nftId : Principal) : async Text {
+        var nftPrice : Text = switch (mapOfPrices.get(nftId)) {
+            case null { "None" };
             case (?result) { result };
         };
         return nftPrice;
     };
+
+    public shared func removeFromSale(nftId : Principal) {
+        saleList := Array.filter<Principal>(saleList, func x = x != nftId);
+        mapOfPrices.delete(nftId);
+    };
+
+    public shared (msg) func addToBoughtOwner(nftId : Principal) {
+        let owner = msg.caller;
+        var ownedNFTs : List.List<Principal> = switch (mapOfOwners.get(owner)) {
+            case null List.nil<Principal>();
+            case (?result) result;
+        };
+
+        ownedNFTs := List.push(nftId, ownedNFTs);
+        mapOfOwners.put(owner, ownedNFTs);
+    };
+
     public shared func clearData() : async () {
         mapOfNFTs := HashMap.HashMap<Principal, NFTActorClass.NFT>(1, Principal.equal, Principal.hash);
         mapOfOwners := HashMap.HashMap<Principal, List.List<Principal>>(1, Principal.equal, Principal.hash);
