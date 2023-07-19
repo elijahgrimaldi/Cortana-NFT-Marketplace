@@ -4,6 +4,8 @@ import { idlFactory } from "../../../declarations/nft";
 import {cortana_backend} from "../../../declarations/cortana_backend";
 import { Principal } from "@dfinity/principal";
 import Button from "./Button";
+import Inspect from "./Inspect"
+import { Link, Routes, Route } from "react-router-dom";
 
 function Item(props) {
   const [name, setName] = useState();
@@ -44,7 +46,7 @@ function Item(props) {
   useEffect(() => {
     if (owner) {
       if (props.sale && props.sale != "None"){
-      setListedPrice(props.sale)
+      setListedPrice(<p className="listed-price">Price: {props.sale}</p>)
       setButton(<Button text="Buy" handleClick={handleBuy} />);
       }
       else{
@@ -74,6 +76,10 @@ function Item(props) {
     setButton(<Button text="Confirm" handleClick={handleConfirm}/>)
   }
   async function handleBuy(){
+    const currentDate = new Date()
+    const dateString = currentDate.toLocaleDateString("en-US")
+    const NFTprice = await cortana_backend.getSalePrice(id);
+    await cortana_backend.recordSell(id, dateString, NFTprice)
     await cortana_backend.removeFromSale(id)
     await cortana_backend.addToBoughtOwner(id)
     alert("NFT purcahsed!")
@@ -82,10 +88,12 @@ function Item(props) {
   return (
     <div className="disGrid-item">
       <div className="disPaper-root disCard-root makeStyles-root-17 disPaper-elevation1 disPaper-rounded">
+      <Link to={`/inspect/${id}`}>
         <img
           className="disCardMedia-root makeStyles-image-19 disCardMedia-media disCardMedia-img"
           src={image}
         />
+      </Link>
         <div className="disCardContent-root">
           <h2 className="disTypography-root makeStyles-bodyText-24 disTypography-h5 disTypography-gutterBottom">
             {name}
@@ -94,14 +102,11 @@ function Item(props) {
           <p className="disTypography-root makeStyles-bodyText-24 disTypography-body2 disTypography-colorTextSecondary">
             Owner: {owner}
           </p>
-          <div className="card-element">
-            <p className="listed-price">{listedPrice}</p>
-          </div>
+          {listedPrice}
           {priceInput}
           {button}
         </div>
       </div>
-
     </div>
   );
 }

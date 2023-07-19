@@ -13,6 +13,7 @@ actor Cortana {
     var mapOfOwners = HashMap.HashMap<Principal, List.List<Principal>>(1, Principal.equal, Principal.hash);
     var saleList : [Principal] = [];
     var mapOfPrices = HashMap.HashMap<Principal, Text>(1, Principal.equal, Principal.hash);
+    var saleHistory = HashMap.HashMap<Principal, List.List<Text>>(1, Principal.equal, Principal.hash);
 
     public shared (msg) func mint(imgData : [Nat8], name : Text) : async Principal {
         let owner : Principal = msg.caller;
@@ -88,6 +89,23 @@ actor Cortana {
 
         ownedNFTs := List.push(nftId, ownedNFTs);
         mapOfOwners.put(owner, ownedNFTs);
+    };
+
+    public shared func recordSell(nftId : Principal, dateString : Text, price : Text) {
+        var sales : List.List<Text> = switch (saleHistory.get(nftId)) {
+            case null List.nil<Text>();
+            case (?result) result;
+        };
+
+        sales := List.push(dateString, List.push(price, sales));
+        saleHistory.put(nftId, sales);
+    };
+    public shared func getSaleHistory(nftId : Principal) : async List.List<Text> {
+        var sales : List.List<Text> = switch (saleHistory.get(nftId)) {
+            case null List.nil<Text>();
+            case (?result) result;
+        };
+        return sales;
     };
 
     public shared func clearData() : async () {

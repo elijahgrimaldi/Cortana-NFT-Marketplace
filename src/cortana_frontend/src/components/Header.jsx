@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import logo from "../../assets/logo.png";
-import { BrowserRouter, Link, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Link, Routes, Route, Outlet } from "react-router-dom";
 import Minter from "./Minter";
 import Gallery from "./Gallery";
 import Home from "./Home"
 import { cortana_backend } from "../../../declarations/cortana_backend"
 import CURRENT_USER_ID from "../index";
 import Discover from "./Discover";
+import Inspect from "./Inspect";
 
 function Header() {
 
@@ -58,9 +59,10 @@ function Header() {
     </div>
     <Routes>
         <Route exact path="/" element={<Home />} />
-        <Route path="/discover" element={forSalePage} />
-        <Route path="/minter" element={<Minter />} />
-        <Route path="/collection" element={userOwnedGallery} />
+        <Route path="/discover/*" element={forSalePage}/>
+        <Route path="/minter/*" element={<Minter />} />
+        <Route path="/collection/*" element={userOwnedGallery}/>
+        <Route path="/inspect/:nftid" element={<Inspect />} />
       </Routes>
     </BrowserRouter>
   );
