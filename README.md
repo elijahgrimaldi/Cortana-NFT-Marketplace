@@ -1,10 +1,10 @@
-# cortana
+# Cortana NFT Marketplace
 
-Welcome to your new cortana project and to the internet computer development community. By default, creating a new project adds this README and some template files to your project directory. You can edit these template files to customize your project and to include your own code to speed up the development cycle.
+Welcome to the Cortana NFT Marketplace.
 
 To get started, you might want to explore the project directory structure and the default configuration file. Working with this project in your development environment will not affect any production deployment or identity tokens.
 
-To learn more before you start working with cortana, see the following documentation available online:
+To learn more before you start working with Cortana, see the following documentation available online:
 
 - [Quick Start](https://internetcomputer.org/docs/current/developer-docs/quickstart/hello10mins)
 - [SDK Developer Tools](https://internetcomputer.org/docs/current/developer-docs/build/install-upgrade-remove)
@@ -12,17 +12,10 @@ To learn more before you start working with cortana, see the following documenta
 - [Motoko Language Quick Reference](https://internetcomputer.org/docs/current/references/motoko-ref/)
 - [JavaScript API Reference](https://erxue-5aaaa-aaaab-qaagq-cai.raw.icp0.io)
 
-If you want to start working on your project right away, you might want to try the following commands:
-
-```bash
-cd cortana/
-dfx help
-dfx canister --help
-```
 
 ## Running the project locally
 
-If you want to test your project locally, you can use the following commands:
+If you want to run the project locally, you can use the following commands:
 
 ```bash
 # Starts the replica, running in the background
@@ -34,7 +27,7 @@ dfx deploy
 
 Once the job completes, your application will be available at `http://localhost:4943?canisterId={asset_canister_id}`.
 
-If you have made changes to your backend canister, you can generate a new candid interface with
+If you have made changes to the backend canister, you can generate a new candid interface with
 
 ```bash
 npm run generate
